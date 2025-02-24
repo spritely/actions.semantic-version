@@ -28,11 +28,39 @@ runs:
         # Simulate main branch
         git branch -m main
 
+    - name: Temporarily override git context
+      shell: bash
+      run: |
+        # Save original Git config/state
+        ORIGINAL_GIT_DIR=$(git rev-parse --git-dir)
+        echo "ORIGINAL_GIT_DIR=$ORIGINAL_GIT_DIR" >> $GITHUB_ENV
+
+        # Force-point the git dir to our test repo
+        export GIT_DIR="${{ github.workspace }}/${{ inputs.testName }}/.git"
+        echo "GIT_DIR=$GIT_DIR" >> $GITHUB_ENV
+
+        # Temporarily make the test repo our "main" repo context
+        git config --local --replace-all core.githookspath "${GIT_DIR}/hooks"
+        git config --local --replace-all core.worktree "${GIT_DIR}"
+      with:
+        workingDirectory: ${{ github.workspace }}
+
     - id: version
       name: Run - Get semantic version
       uses: ./get
       with:
         workingDirectory: ${{ github.workspace }}/${{ inputs.testName }}
+
+    - name: Restore git context
+      shell: bash
+      if: always()
+      run: |
+        git config --local --replace-all core.githookspath "${{ env.ORIGINAL_GIT_DIR }}/hooks"
+        git config --local --unset core.worktree || true
+        export GIT_DIR="${{ env.ORIGINAL_GIT_DIR }}"
+        git checkout ${{ env.ORIGINAL_HEAD }}
+      with:
+        workingDirectory: ${{ github.workspace }}
 
     - name: Verify output format
       shell: bash
