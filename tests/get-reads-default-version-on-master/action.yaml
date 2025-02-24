@@ -40,9 +40,9 @@ runs:
         echo "Generated version: $VERSION"
         echo "Branch name: $BRANCH"
 
-        # Verify branch name is 'main'
-        if [[ "$BRANCH" != "main" ]]; then
-          echo "::error::Branch name is not 'main'"
+        # Verify branch name is 'master'
+        if [[ "$BRANCH" != "master" ]]; then
+          echo "::error::Branch name is $BRANCH, but was expecting 'master'"
           exit 1
         fi
 
