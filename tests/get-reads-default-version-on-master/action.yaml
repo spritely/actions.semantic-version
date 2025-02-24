@@ -34,26 +34,26 @@ runs:
     - name: Verify output format
       shell: bash
       run: |
-        VERSION="${{ steps.version.outputs.version }}"
-        BRANCH="${{ steps.version.outputs.branchName }}"
+        version="${{ steps.version.outputs.version }}"
+        branchName="${{ steps.version.outputs.branchName }}"
 
-        echo "Generated version: $VERSION"
-        echo "Branch name: $BRANCH"
+        echo "Generated version: $version"
+        echo "Branch name: $branchName"
 
         # Verify branch name is 'master'
-        if [[ "$BRANCH" != "master" ]]; then
-          echo "::error::Branch name is $BRANCH, but was expecting 'master'"
+        if [[ "$branchName" != "master" ]]; then
+          echo "::error::Branch name is not 'master'"
           exit 1
         fi
 
         # Check version format (should be X.Y.Z without prerelease on main)
-        if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-          echo "::error::Version format incorrect for main branch: $VERSION"
+        if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "::error::Version format incorrect for main branch: $version"
           exit 1
         fi
 
-        if ! [[ "$VERSION" = "v0.1.0" ]]; then
-          echo "::error::Version should default to 0.1.0: $VERSION"
+        if ! [[ "$version" = "v0.1.0" ]]; then
+          echo "::error::Version should default to 0.1.0: $version"
           exit 1
         fi
 
