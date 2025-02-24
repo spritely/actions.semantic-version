@@ -24,6 +24,7 @@ runs:
         git add README.md
         git commit -m "Initial commit"
         git tag v0.0.0
+        git push origin v0.0.0
 
     - id: version
       name: Run - Get semantic version
