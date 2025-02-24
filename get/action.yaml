@@ -46,6 +46,7 @@ runs:
         # Default semantic value for main branch
         semantic="${{ steps.gitversion.outputs.version }}"
         branchName=$(git rev-parse --abbrev-ref HEAD)
+        shortSha=$(git rev-parse --short HEAD)
 
         # Add additional version details when branch is not ${{ github.event.repository.default_branch }}
         if [[ "${branchName}" != "${{ github.event.repository.default_branch }}" ]]; then
@@ -54,7 +55,7 @@ runs:
             # Not using the - character because branch names (PreReleaseLabel) will often contain it
             # and because it is not the internal separator character for the prerelease section of semver
             # See: https://semver.org/#spec-item-9
-            semantic="${{ steps.gitversion.outputs.MajorMinorPatch }}-${branchName}.${{ steps.gitversion.outputs.increment }}.${{ steps.gitversion.outputs.current_commit }}"
+            semantic="${{ steps.gitversion.outputs.semantic }}-${branchName}.${{ steps.gitversion.outputs.increment }}.${shortSha}"
         fi
 
         # This is the value we propagate forward for any other consumers

@@ -16,16 +16,13 @@ runs:
         mkdir -p ${{ github.workspace }}/${{ inputs.testName }}
         cd ${{ github.workspace }}/${{ inputs.testName }}
 
-        git init
+        git init --initial-branch=main
         git config --local user.email "test@example.com"
         git config --local user.name "Test User"
 
         echo "# Test repo" > README.md
         git add README.md
         git commit -m "Initial commit"
-
-        git branch -m main
-        git remote add origin https://example.com/dummy.git
 
     - id: version
       name: Run - Get semantic version
