@@ -37,12 +37,7 @@ runs:
       with:
         major_pattern: "#major"
         minor_pattern: "#minor"
-        branch_pattern: ^main$|^master$
-
-        # If not on main/master, include the branch name in version
-        format: "${major}.${minor}.${patch}-${branch}.${increment}.${sha:0:7}"
-        # On main/master branch, use a clean semver format
-        main_format: "${major}.${minor}.${patch}"
+        version_format: "${major}.${minor}.${patch}-${branch}.${increment}.${sha:0:7}"
 
     - id: version
       name: Get semantic version
