@@ -29,7 +29,7 @@ runs:
 
     - id: version
       name: Run - Get semantic version
-      uses: /get
+      uses: ../get
       with:
         workingDirectory: /tmp/${{ inputs.testName }}
 
