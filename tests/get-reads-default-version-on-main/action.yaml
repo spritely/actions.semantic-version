@@ -13,10 +13,11 @@ runs:
     - name: Set up test environment
       shell: bash
       run: |
-        mkdir -p /tmp/${{ inputs.testName }}
-        cd /tmp/${{ inputs.testName }}
+        mkdir -p ${{ github.workspace }}/${{ inputs.testName }}
+        cd ${{ github.workspace }}/${{ inputs.testName }}
 
         git init
+        git config --global init.defaultBranch main
         git config --local user.email "test@example.com"
         git config --local user.name "Test User"
 
@@ -27,25 +28,17 @@ runs:
         # Simulate main branch
         git branch -m main
 
-    # Cannot use relative paths like ../ or dynamic values like ${{ github.workspace }} in uses field
-    # So we copy the action files to where they can be used in next step
-    - name: Copy get action to test directory
-      shell: bash
-      run: |
-        mkdir -p /tmp/${{ inputs.testName }}/get
-        cp -r ${{ github.workspace }}/get/* /tmp/${{ inputs.testName }}/get/
-
     - id: version
       name: Run - Get semantic version
       uses: ./get
       with:
-        workingDirectory: /tmp/${{ inputs.testName }}
+        workingDirectory: ${{ github.workspace }}/${{ inputs.testName }}
 
     - name: Verify output format
       shell: bash
       run: |
-        VERSION="${{ steps.get_version.outputs.version }}"
-        BRANCH="${{ steps.get_version.outputs.branchName }}"
+        VERSION="${{ steps.version.outputs.version }}"
+        BRANCH="${{ steps.version.outputs.branchName }}"
 
         echo "Generated version: $VERSION"
         echo "Branch name: $BRANCH"
