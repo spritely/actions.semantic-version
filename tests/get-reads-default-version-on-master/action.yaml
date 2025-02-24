@@ -19,6 +19,7 @@ runs:
         git init --initial-branch=master
         git config --local user.email "test@example.com"
         git config --local user.name "Test User"
+        git remote add origin https://example.com/not-used.git
 
         echo "# Test repo" > README.md
         git add README.md
