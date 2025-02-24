@@ -23,6 +23,7 @@ runs:
         echo "# Test repo" > README.md
         git add README.md
         git commit -m "Initial commit"
+        git tag v0.0.0
 
     - id: version
       name: Run - Get semantic version
