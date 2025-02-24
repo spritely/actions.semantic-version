@@ -31,6 +31,8 @@ runs:
     - name: Temporarily override git context
       shell: bash
       run: |
+        cd ${{ github.workspace }}
+
         # Save original Git config/state
         ORIGINAL_GIT_DIR=$(git rev-parse --git-dir)
         echo "ORIGINAL_GIT_DIR=$ORIGINAL_GIT_DIR" >> $GITHUB_ENV
@@ -42,8 +44,6 @@ runs:
         # Temporarily make the test repo our "main" repo context
         git config --local --replace-all core.githookspath "${GIT_DIR}/hooks"
         git config --local --replace-all core.worktree "${GIT_DIR}"
-      with:
-        workingDirectory: ${{ github.workspace }}
 
     - id: version
       name: Run - Get semantic version
@@ -55,12 +55,11 @@ runs:
       shell: bash
       if: always()
       run: |
+        cd ${{ github.workspace }}
         git config --local --replace-all core.githookspath "${{ env.ORIGINAL_GIT_DIR }}/hooks"
         git config --local --unset core.worktree || true
         export GIT_DIR="${{ env.ORIGINAL_GIT_DIR }}"
         git checkout ${{ env.ORIGINAL_HEAD }}
-      with:
-        workingDirectory: ${{ github.workspace }}
 
     - name: Verify output format
       shell: bash
