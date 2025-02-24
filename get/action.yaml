@@ -31,20 +31,31 @@ runs:
         fetch-depth: 0
         path: ${{ inputs.workingDirectory }}
 
-    - id: semantic
-      name: Calculate semantic version
+    - id: gitversion
+      name: Generate version details
       uses: paulhatch/semantic-version@v5.4.0
       with:
         major_pattern: "#major"
         minor_pattern: "#minor"
-        version_format: "${major}.${minor}.${patch}-${branch}.${increment}.${sha:0:7}"
 
     - id: version
       name: Get semantic version
       shell: bash
       working-directory: ${{ inputs.workingDirectory }}
       run: |
-        semantic="${{ steps.semantic.outputs.version }}"
+        # Default semantic value for main branch
+        semantic="${{ steps.gitversion.outputs.version }}"
+        branchName=$(git rev-parse --abbrev-ref HEAD)
+
+        # Add additional version details when branch is not ${{ github.event.repository.default_branch }}
+        if [[ "${branchName}" != "${{ github.event.repository.default_branch }}" ]]; then
+            # Adding short sha to prerelease section of semantic version instead of build section
+            # because npm and Azure Artifacts do not like the + character that semver uses for build
+            # Not using the - character because branch names (PreReleaseLabel) will often contain it
+            # and because it is not the internal separator character for the prerelease section of semver
+            # See: https://semver.org/#spec-item-9
+            semantic="${{ steps.gitversion.outputs.MajorMinorPatch }}-${branchName}.${{ steps.gitversion.outputs.increment }}.${{ steps.gitversion.outputs.current_commit }}"
+        fi
 
         # This is the value we propagate forward for any other consumers
         echo "Semantic version is: $semantic"
