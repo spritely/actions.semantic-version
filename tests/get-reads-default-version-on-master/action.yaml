@@ -52,8 +52,8 @@ runs:
           exit 1
         fi
 
-        if ! [[ "$version" = "v0.1.0" ]]; then
-          echo "::error::Version should default to 0.1.0: $version"
+        if ! [[ "$version" = "0.0.1" ]]; then
+          echo "::error::Version should default to 0.0.1: $version"
           exit 1
         fi
 
