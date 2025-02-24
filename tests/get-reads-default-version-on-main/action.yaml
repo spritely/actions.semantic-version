@@ -27,9 +27,17 @@ runs:
         # Simulate main branch
         git branch -m main
 
+    # Cannot use relative paths like ../ or dynamic values like ${{ github.workspace }} in uses field
+    # So we copy the action files to where they can be used in next step
+    - name: Copy get action to test directory
+      shell: bash
+      run: |
+        mkdir -p /tmp/${{ inputs.testName }}/get
+        cp -r ${{ github.workspace }}/get/* /tmp/${{ inputs.testName }}/get/
+
     - id: version
       name: Run - Get semantic version
-      uses: ${{ github.workspace }}/get
+      uses: ./get
       with:
         workingDirectory: /tmp/${{ inputs.testName }}
 
