@@ -26,6 +26,7 @@ runs:
 
         git branch -m main
         git remote add origin https://example.com/dummy.git
+        git checkout main
 
     - id: version
       name: Run - Get semantic version
