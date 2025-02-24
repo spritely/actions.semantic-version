@@ -1,0 +1,23 @@
+# Requires build account have permission to create tags in git repo (Contribute permission)
+
+name: Apply Semantic Version
+description: Applies a git tag to the commit.
+
+inputs:
+  version:
+    description: The semantic version to apply. A 'v' will be prepended to the name so do not include it.
+    required: true
+  workingDirectory:
+    description: The directory to run the git commands in. Defaults to ./
+    required: false
+    default: ./
+
+runs:
+  using: composite
+  steps:
+    - name: Apply version tag - v${{ inputs.version }}
+      shell: bash
+      working-directory: ${{ inputs.workingDirectory }}
+      run: |
+        git tag v${{ inputs.version }}
+        git push origin v${{ inputs.version }}
