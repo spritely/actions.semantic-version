@@ -35,6 +35,7 @@ runs:
         skipCheckout: true
       # Force GitVersion to assume it's running in the main branch
       env:
+        GITHUB_ACTIONS: 'false'
         GITHUB_REF: refs/heads/main
 
     - name: Verify output format
