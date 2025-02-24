@@ -15,8 +15,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Test - Get reads default version on main
-        uses: ./tests/get-reads-default-version-on-main
+      - name: Test - Get reads default version on master
+        uses: ./tests/get-reads-default-version-on-master
 
       - id: version
         name: Get semantic version
