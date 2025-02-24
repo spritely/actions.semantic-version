@@ -1,0 +1,62 @@
+name: Test - Get reads default version on main branch
+description: Test - Get reads default version on main branch
+
+inputs:
+  testName:
+    description: Common variable for test. Not necessary to set.
+    default: get-reads-default-version-on-main
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Set up test environment
+      shell: bash
+      run: |
+        mkdir -p /tmp/${{ inputs.testName }}
+        cd /tmp/${{ inputs.testName }}
+
+        git init
+        git config --local user.email "test@example.com"
+        git config --local user.name "Test User"
+
+        echo "# Test repo" > README.md
+        git add README.md
+        git commit -m "Initial commit"
+
+        # Simulate main branch
+        git branch -m main
+
+    - id: version
+      name: Run - Get semantic version
+      uses: /get
+      with:
+        workingDirectory: /tmp/${{ inputs.testName }}
+
+    - name: Verify output format
+      shell: bash
+      run: |
+        VERSION="${{ steps.get_version.outputs.version }}"
+        BRANCH="${{ steps.get_version.outputs.branchName }}"
+
+        echo "Generated version: $VERSION"
+        echo "Branch name: $BRANCH"
+
+        # Verify branch name is 'main'
+        if [[ "$BRANCH" != "main" ]]; then
+          echo "::error::Branch name is not 'main'"
+          exit 1
+        fi
+
+        # Check version format (should be X.Y.Z without prerelease on main)
+        if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "::error::Version format incorrect for main branch: $VERSION"
+          exit 1
+        fi
+
+        if ! [[ "$VERSION" = "v0.1.0" ]]; then
+          echo "::error::Version should default to 0.1.0: $VERSION"
+          exit 1
+        fi
+
+        echo "✅ Test passed: Version format correct for main branch"
