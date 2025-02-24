@@ -1,10 +1,10 @@
-name: Test - Get reads default version on main branch
-description: Test - Get reads default version on main branch
+name: Test - Get reads default version on master branch
+description: Test - Get reads default version on master branch
 
 inputs:
   testName:
     description: Common variable for test. Not necessary to set.
-    default: get-reads-default-version-on-main
+    default: get-reads-default-version-on-master
     required: false
 
 runs:
@@ -16,7 +16,7 @@ runs:
         mkdir -p ${{ github.workspace }}/${{ inputs.testName }}
         cd ${{ github.workspace }}/${{ inputs.testName }}
 
-        git init --initial-branch=main
+        git init --initial-branch=master
         git config --local user.email "test@example.com"
         git config --local user.name "Test User"
 
@@ -30,10 +30,6 @@ runs:
       with:
         workingDirectory: ${{ github.workspace }}/${{ inputs.testName }}
         skipCheckout: true
-      # Force GitVersion to assume it's running in the main branch
-      env:
-        GITHUB_ACTIONS: 'false'
-        GITHUB_REF: refs/heads/main
 
     - name: Verify output format
       shell: bash

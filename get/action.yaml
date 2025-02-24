@@ -55,7 +55,7 @@ runs:
             # Not using the - character because branch names (PreReleaseLabel) will often contain it
             # and because it is not the internal separator character for the prerelease section of semver
             # See: https://semver.org/#spec-item-9
-            semantic="${{ steps.gitversion.outputs.semantic }}-${branchName}.${{ steps.gitversion.outputs.increment }}.${shortSha}"
+            semantic="${{ steps.gitversion.outputs.version }}-${branchName}.${{ steps.gitversion.outputs.increment }}.${shortSha}"
         fi
 
         # This is the value we propagate forward for any other consumers
