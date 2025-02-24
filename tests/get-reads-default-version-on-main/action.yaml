@@ -17,7 +17,6 @@ runs:
         cd ${{ github.workspace }}/${{ inputs.testName }}
 
         git init
-        git config --local init.defaultBranch main
         git config --local user.email "test@example.com"
         git config --local user.name "Test User"
 
@@ -25,8 +24,8 @@ runs:
         git add README.md
         git commit -m "Initial commit"
 
-        # Simulate main branch
         git branch -m main
+        git remote add origin https://example.com/dummy.git
 
     - id: version
       name: Run - Get semantic version
