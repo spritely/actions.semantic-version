@@ -9,6 +9,10 @@ inputs:
     description: The directory to run the git commands in. Defaults to ./
     required: false
     default: ./
+  skipCheckout:
+    description: If true, do not run the checkout step. Defaults to false
+    required: false
+    default: "false"
 outputs:
   branchName:
     description: The name of the branch being built.
@@ -21,6 +25,7 @@ runs:
   using: composite
   steps:
     - name: Checkout repository
+      if: ${{ inputs.skipCheckout != 'true' }}
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
