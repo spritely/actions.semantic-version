@@ -73,6 +73,7 @@ runs:
       uses: gittools/actions/gitversion/execute@v3.1.11
       with:
         targetPath: ${{ inputs.workingDirectory }}
+        useConfigFile: true
 
     - id: version
       name: Get semantic version
