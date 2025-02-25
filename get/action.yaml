@@ -76,6 +76,7 @@ runs:
       with:
         targetPath: ${{ inputs.workingDirectory }}
         # useConfigFile: true
+        additionalArguments: /loglevel Debug
 
     - id: version
       name: Get semantic version
