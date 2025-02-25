@@ -22,7 +22,7 @@ runs:
 
         echo "# Test repo" > README.md
         git add README.md
-        git commit -m "Initial commit"
+        git commit -m "Initial commit" --allow-empty
         git tag v0.0.0
 
     - id: version
