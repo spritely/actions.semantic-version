@@ -74,6 +74,7 @@ runs:
       name: Generate version details
       # Find new versions at: https://github.com/marketplace/actions/gittools
       uses: gittools/actions/gitversion/execute@v3.1.11
+      working-directory: ${{ inputs.workingDirectory }}
       with:
         targetPath: ${{ inputs.workingDirectory }}
         useConfigFile: true
