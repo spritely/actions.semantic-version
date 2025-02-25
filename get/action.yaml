@@ -42,7 +42,6 @@ runs:
     # Add #minor to the end of a commit message to increment the minor version number
     - name: Configure semantic version
       shell: bash
-      working-directory: ${{ inputs.workingDirectory }}
       run: |
         # Write GitVersion config file to disk
         cat > GitVersion.yml <<EOF
@@ -74,7 +73,6 @@ runs:
       name: Generate version details
       # Find new versions at: https://github.com/marketplace/actions/gittools
       uses: gittools/actions/gitversion/execute@v3.1.11
-      working-directory: ${{ inputs.workingDirectory }}
       with:
         targetPath: ${{ inputs.workingDirectory }}
         useConfigFile: true
