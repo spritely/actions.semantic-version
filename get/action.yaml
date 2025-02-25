@@ -69,6 +69,28 @@ runs:
     #     pwd
     #     tree
 
+    - name: Debug - Check Git Repository
+      shell: bash
+      working-directory: ${{ inputs.workingDirectory }}
+      run: |
+        echo "Current directory: $(pwd)"
+        if [ -d .git ]; then
+          echo "Git repository found."
+          git status
+          git log --oneline
+          git rev-parse --is-shallow-repository
+        else
+          echo "::error::No .git directory found at ${{ inputs.workingDirectory }}"
+          exit 1
+        fi
+
+    - name: Debug - Run GitVersion Manually
+      shell: bash
+      working-directory: ${{ inputs.workingDirectory }}
+      run: |
+        echo "Running GitVersion manually:"
+        /opt/hostedtoolcache/GitVersion.Tool/6.0.5/dotnet-gitversion /output json /l console
+
     - id: gitversion
       name: Generate version details
       # Find new versions at: https://github.com/marketplace/actions/gittools
@@ -76,7 +98,6 @@ runs:
       with:
         targetPath: ${{ inputs.workingDirectory }}
         # useConfigFile: true
-        additionalArguments: /loglevel Debug
 
     - id: version
       name: Get semantic version
