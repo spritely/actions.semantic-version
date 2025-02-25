@@ -36,7 +36,7 @@ runs:
       uses: gittools/actions/gitversion/setup@v3.1.11
       with:
         # Find new versions at: https://github.com/GitTools/GitVersion/releases
-        versionSpec: 6.1.0
+        versionSpec: 6.0.5
 
     # Add #major to the end of a commit message to increment the major version number
     # Add #minor to the end of a commit message to increment the minor version number
