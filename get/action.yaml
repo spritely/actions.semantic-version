@@ -1,5 +1,5 @@
 # Requires GitHub Action:
-# - GitTools@0.11.0 - https://github.com/marketplace/actions/gittools
+# - GitTools@3.1.11 - https://github.com/marketplace/actions/gittools
 
 name: Get Semantic Version
 description: Calculates a semantic version number based on git history.
@@ -16,7 +16,7 @@ inputs:
 outputs:
   branchName:
     description: The name of the branch being built.
-    value: ${{ steps.version.outputs.branchName }}
+    value: ${{ steps.gitversion.outputs.BranchName }}
   version:
     description: Full semantic version including suffix if not on master - {major}.{minor}.{patch}(-{branch}{increment}+{sha7})
     value: ${{ steps.version.outputs.semantic }}
@@ -31,13 +31,48 @@ runs:
         fetch-depth: 0
         path: ${{ inputs.workingDirectory }}
 
+    - name: Install GitVersion
+      # Find new versions at: https://github.com/marketplace/actions/gittools
+      uses: gittools/actions/gitversion/setup@v3.1.11
+      with:
+        # Find new versions at: https://github.com/GitTools/GitVersion/releases
+        versionSpec: 6.1.0
+
+    # Add #major to the end of a commit message to increment the major version number
+    # Add #minor to the end of a commit message to increment the minor version number
+    - name: Configure semantic version
+      shell: bash
+      working-directory: ${{ inputs.workingDirectory }}
+      run: |
+        # Write GitVersion config file to disk
+        cat > GitVersion.yml <<EOF
+        major-version-bump-message: (?i)#major\s*$
+        minor-version-bump-message: (?i)#minor\s*$
+        branches:
+          main:
+            regex: ^master$|^main$
+            tag: ''
+            increment: Patch
+            source-branches: [ 'develop', 'release' ]
+          develop:
+            regex: ^dev(elop)?(ment)?$
+            tag: useBranchName
+            increment: Patch
+            source-branches: []
+          hotfix:
+            regex: ^hotfix(es)?[/-]
+            tag: useBranchName
+            increment: Patch
+            source-branches: [ 'develop', 'main' ]
+        EOF
+        cat GitVersion.yml
+
     - id: gitversion
       name: Generate version details
-      uses: paulhatch/semantic-version@v5.4.0
-      working-directory: ${{ inputs.workingDirectory }}
+      # Find new versions at: https://github.com/marketplace/actions/gittools
+      uses: gittools/actions/gitversion/execute@v3.1.11
       with:
-        major_pattern: "#major"
-        minor_pattern: "#minor"
+        targetPath: ${{ inputs.workingDirectory }}
 
     - id: version
       name: Get semantic version
@@ -45,25 +80,19 @@ runs:
       working-directory: ${{ inputs.workingDirectory }}
       run: |
         # Default semantic value for main branch
-        semantic="${{ steps.gitversion.outputs.version }}"
-        branchName=$(git rev-parse --abbrev-ref HEAD)
-        shortSha=$(git rev-parse --short HEAD)
+        semantic="${{ steps.gitversion.outputs.MajorMinorPatch }}"
 
         # Add additional version details when branch is not ${{ github.event.repository.default_branch }}
-        if [[ "${branchName}" != "${{ github.event.repository.default_branch }}" ]]; then
+        if [[ "${{ steps.gitversion.outputs.BranchName }}" != "${{ github.event.repository.default_branch }}" ]]; then
             # Adding short sha to prerelease section of semantic version instead of build section
             # because npm and Azure Artifacts do not like the + character that semver uses for build
-            # Not using the - character because branch names (${branchName}) will often contain it
+            # Not using the - character because branch names (PreReleaseLabel) will often contain it
             # and because it is not the internal separator character for the prerelease section of semver
             # See: https://semver.org/#spec-item-9
-            semantic="${{ steps.gitversion.outputs.version }}-${branchName}.${{ steps.gitversion.outputs.increment }}.${shortSha}"
+            semantic="${{ steps.gitversion.outputs.MajorMinorPatch }}-${{ steps.gitversion.outputs.PreReleaseLabel }}.${{ steps.gitversion.outputs.CommitsSinceVersionSource }}.${{ steps.gitversion.outputs.ShortSha }}"
         fi
 
         # This is the value we propagate forward for any other consumers
-        echo "Branch is: $branchName"
-        echo "# Branch" >> $GITHUB_STEP_SUMMARY
-        echo "$branchName" >> $GITHUB_STEP_SUMMARY
-        echo "branchName=$branchName" >> $GITHUB_OUTPUT
         echo "Semantic version is: $semantic"
         echo "# Version" >> $GITHUB_STEP_SUMMARY
         echo "$semantic" >> $GITHUB_STEP_SUMMARY
