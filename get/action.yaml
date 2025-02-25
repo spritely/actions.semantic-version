@@ -34,10 +34,10 @@ runs:
     - id: gitversion
       name: Generate version details
       uses: paulhatch/semantic-version@v5.4.0
+      working-directory: ${{ inputs.workingDirectory }}
       with:
         major_pattern: "#major"
         minor_pattern: "#minor"
-        working_directory: ${{ inputs.workingDirectory }}
 
     - id: version
       name: Get semantic version

@@ -19,13 +19,11 @@ runs:
         git init --initial-branch=master
         git config --local user.email "test@example.com"
         git config --local user.name "Test User"
-        git remote add origin https://example.com/not-used.git
 
         echo "# Test repo" > README.md
         git add README.md
         git commit -m "Initial commit"
         git tag v0.0.0
-        git push origin v0.0.0
 
     - id: version
       name: Run - Get semantic version
