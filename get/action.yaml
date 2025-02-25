@@ -38,36 +38,36 @@ runs:
         # Find new versions at: https://github.com/GitTools/GitVersion/releases
         versionSpec: 6.0.5
 
-    # Add #major to the end of a commit message to increment the major version number
-    # Add #minor to the end of a commit message to increment the minor version number
-    - name: Configure semantic version
-      shell: bash
-      run: |
-        # Write GitVersion config file to disk
-        cat > GitVersion.yml <<EOF
-        major-version-bump-message: (?i)#major\s*$
-        minor-version-bump-message: (?i)#minor\s*$
-        branches:
-          main:
-            regex: ^master$|^main$
-            tag: ''
-            increment: Patch
-            source-branches: [ 'develop', 'release' ]
-          develop:
-            regex: ^dev(elop)?(ment)?$
-            tag: useBranchName
-            increment: Patch
-            source-branches: []
-          hotfix:
-            regex: ^hotfix(es)?[/-]
-            tag: useBranchName
-            increment: Patch
-            source-branches: [ 'develop', 'main' ]
-        EOF
-        cat GitVersion.yml
+    # # Add #major to the end of a commit message to increment the major version number
+    # # Add #minor to the end of a commit message to increment the minor version number
+    # - name: Configure semantic version
+    #   shell: bash
+    #   run: |
+    #     # Write GitVersion config file to disk
+    #     cat > GitVersion.yml <<EOF
+    #     major-version-bump-message: (?i)#major\s*$
+    #     minor-version-bump-message: (?i)#minor\s*$
+    #     branches:
+    #       main:
+    #         regex: ^master$|^main$
+    #         tag: ''
+    #         increment: Patch
+    #         source-branches: [ 'develop', 'release' ]
+    #       develop:
+    #         regex: ^dev(elop)?(ment)?$
+    #         tag: useBranchName
+    #         increment: Patch
+    #         source-branches: []
+    #       hotfix:
+    #         regex: ^hotfix(es)?[/-]
+    #         tag: useBranchName
+    #         increment: Patch
+    #         source-branches: [ 'develop', 'main' ]
+    #     EOF
+    #     cat GitVersion.yml
 
-        pwd
-        tree
+    #     pwd
+    #     tree
 
     - id: gitversion
       name: Generate version details
@@ -75,7 +75,7 @@ runs:
       uses: gittools/actions/gitversion/execute@v3.1.11
       with:
         targetPath: ${{ inputs.workingDirectory }}
-        useConfigFile: true
+        # useConfigFile: true
 
     - id: version
       name: Get semantic version
