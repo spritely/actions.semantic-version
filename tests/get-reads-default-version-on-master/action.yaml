@@ -1,0 +1,60 @@
+name: Test - Get reads default version on master branch
+description: Test - Get reads default version on master branch
+
+inputs:
+  testName:
+    description: Common variable for test. Not necessary to set.
+    default: get-reads-default-version-on-master
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Set up test environment
+      shell: bash
+      run: |
+        mkdir -p ${{ github.workspace }}/${{ inputs.testName }}
+        cd ${{ github.workspace }}/${{ inputs.testName }}
+
+        git init --initial-branch=master
+        git config --local user.email "test@example.com"
+        git config --local user.name "Test User"
+
+        echo "# Test repo" > README.md
+        git add README.md
+        git commit -m "Initial commit"
+
+    - id: version
+      name: Run - Get semantic version
+      uses: ./get
+      with:
+        workingDirectory: ${{ github.workspace }}/${{ inputs.testName }}
+        skipCheckout: true
+
+    - name: Verify output format
+      shell: bash
+      run: |
+        version="${{ steps.version.outputs.version }}"
+        branchName="${{ steps.version.outputs.branchName }}"
+
+        echo "Generated version: $version"
+        echo "Branch name: $branchName"
+
+        # Verify branch name is 'master'
+        if [[ "$branchName" != "master" ]]; then
+          echo "::error::Branch name is not 'master'"
+          exit 1
+        fi
+
+        # Check version format (should be X.Y.Z without prerelease on main)
+        if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "::error::Version format incorrect for main branch: $version"
+          exit 1
+        fi
+
+        if ! [[ "$version" = "0.0.1" ]]; then
+          echo "::error::Version should default to 0.0.1: $version"
+          exit 1
+        fi
+
+        echo "✅ Test passed: Version format correct for main branch"
