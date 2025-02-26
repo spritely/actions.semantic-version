@@ -104,8 +104,7 @@ runs:
       shell: bash
       working-directory: ${{ github.workspace }}
       run: |
-        sudo apt-get install -y jq
-        output=$(/opt/hostedtoolcache/GitVersion.Tool/6.0.5/dotnet-gitversion /branch master /output json)
+        output=$(/opt/hostedtoolcache/GitVersion.Tool/6.0.5/dotnet-gitversion /nofetch /output json)
         echo "$output"
         version=$(echo "$output" | jq -r '.SemVer')
         branchName=$(echo "$output" | jq -r '.BranchName')
