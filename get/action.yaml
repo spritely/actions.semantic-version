@@ -69,35 +69,48 @@ runs:
     #     pwd
     #     tree
 
-    - name: Debug - Check Git Repository
-      shell: bash
-      working-directory: ${{ inputs.workingDirectory }}
-      run: |
-        echo "Current directory: $(pwd)"
-        if [ -d .git ]; then
-          echo "Git repository found."
-          git status
-          git log --oneline
-          git rev-parse --is-shallow-repository
-        else
-          echo "::error::No .git directory found at ${{ inputs.workingDirectory }}"
-          exit 1
-        fi
+    # - name: Debug - Check Git Repository
+    #   shell: bash
+    #   working-directory: ${{ inputs.workingDirectory }}
+    #   run: |
+    #     echo "Current directory: $(pwd)"
+    #     if [ -d .git ]; then
+    #       echo "Git repository found."
+    #       git status
+    #       git log --oneline
+    #       git rev-parse --is-shallow-repository
+    #     else
+    #       echo "::error::No .git directory found at ${{ inputs.workingDirectory }}"
+    #       exit 1
+    #     fi
 
-    - name: Debug - Run GitVersion Manually
-      shell: bash
-      working-directory: ${{ inputs.workingDirectory }}
-      run: |
-        echo "Running GitVersion manually:"
-        /opt/hostedtoolcache/GitVersion.Tool/6.0.5/dotnet-gitversion /output json /l console
+    # - name: Debug - Run GitVersion Manually
+    #   shell: bash
+    #   working-directory: ${{ inputs.workingDirectory }}
+    #   run: |
+    #     echo "Running GitVersion manually:"
+    #     /opt/hostedtoolcache/GitVersion.Tool/6.0.5/dotnet-gitversion /output json /l console
 
-    - id: gitversion
-      name: Generate version details
-      # Find new versions at: https://github.com/marketplace/actions/gittools
-      uses: gittools/actions/gitversion/execute@v3.1.11
-      with:
-        targetPath: ${{ inputs.workingDirectory }}
-        # useConfigFile: true
+    # - id: gitversion
+    #   name: Generate version details
+    #   # Find new versions at: https://github.com/marketplace/actions/gittools
+    #   uses: gittools/actions/gitversion/execute@v3.1.11
+    #   with:
+    #     targetPath: ${{ inputs.workingDirectory }}
+    #     # useConfigFile: true
+
+    - name: Run GitVersion manually
+      id: gitversion
+      shell: bash
+      working-directory: ${{ github.workspace }}/test-repo
+      run: |
+        sudo apt-get install -y jq
+        output=$(/opt/hostedtoolcache/GitVersion.Tool/6.0.5/dotnet-gitversion /branch master /output json)
+        echo "$output"
+        version=$(echo "$output" | jq -r '.SemVer')
+        branchName=$(echo "$output" | jq -r '.BranchName')
+        echo "version=$version" >> $GITHUB_OUTPUT
+        echo "branchName=$branchName" >> $GITHUB_OUTPUT
 
     - id: version
       name: Get semantic version
