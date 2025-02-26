@@ -110,6 +110,8 @@ runs:
         branchName=$(echo "$output" | jq -r '.BranchName')
         echo "version=$version" >> $GITHUB_OUTPUT
         echo "branchName=$branchName" >> $GITHUB_OUTPUT
+      env:
+        GITHUB_ACTIONS: ""
 
     - id: version
       name: Get semantic version
