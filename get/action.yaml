@@ -112,6 +112,7 @@ runs:
         echo "branchName=$branchName" >> $GITHUB_OUTPUT
       env:
         GITHUB_ACTIONS: ""
+        GITHUB_REF: ""
 
     - id: version
       name: Get semantic version
