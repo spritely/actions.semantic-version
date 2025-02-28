@@ -6,6 +6,7 @@
     "dockerComposeFile": "docker-compose.yaml",
     "service": "actions-semantic-version-dev",
     "workspaceFolder": "/src",
+    "initializeCommand": "(mkdir .devcontainer 2>/dev/null; touch .devcontainer/.env 2>/dev/null) || (mkdir .devcontainer 2> nul & type nul >> .devcontainer/.env 2> nul)",
 
     // Features to add to the dev container. More info: https://containers.dev/features.
     // "features": {},
