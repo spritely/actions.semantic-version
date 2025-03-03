@@ -16,8 +16,6 @@
             "extensions": [
                 "bierner.github-markdown-preview",
                 "editorconfig.editorconfig",
-                "github.copilot",
-                "github.copilot-chat",
                 "github.vscode-github-actions",
                 "jetmartin.bats",
                 "mads-hartmann.bash-ide-vscode",

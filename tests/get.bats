@@ -659,3 +659,7 @@ teardown() {
     # Should not have consecutive hyphens
     [[ ! "$branch_part" =~ -- ]]
 }
+
+@test "fail on purpose to test build" {
+    return 1
+}

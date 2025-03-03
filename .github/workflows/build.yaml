@@ -19,6 +19,19 @@ jobs:
         name: Get semantic version
         uses: ./get
 
+      - name: Create .env for build
+        shell: bash
+        run: |
+          cat > ./.devcontainer/.env <<EOF
+          EOF
+
+      - name: dotnet test Release
+        uses: devcontainers/ci@v0.3
+        with:
+          runCmd: |
+            bats --report-formatter junit ./tests/
+          push: never
+
       - name: Apply semantic version
         if: ${{ steps.version.outputs.branchName == github.event.repository.default_branch }}
         uses: ./apply
