@@ -8,6 +8,7 @@ permissions:
 
 jobs:
   build:
+    name: Build and Test
     runs-on: ubuntu-24.04
 
     steps:
