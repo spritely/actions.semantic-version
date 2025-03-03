@@ -3,6 +3,7 @@ name: Build
 on: [push, workflow_dispatch]
 
 permissions:
+  checks: write   # To be able to write test results
   contents: write # To be able to apply semantic version tags to the repository
 
 jobs:
