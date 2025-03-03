@@ -34,11 +34,11 @@ jobs:
 
       - name: Generate test report
         uses: dorny/test-reporter@v1.9.1
-        if: success() || failure()    # run this step even if previous step failed
+        if: always()
         with:
           name: Test Results
           path: report.xml
-          reporter: jest-junit
+          reporter: java-junit
 
       - name: Apply semantic version
         if: ${{ steps.version.outputs.branchName == github.event.repository.default_branch }}
