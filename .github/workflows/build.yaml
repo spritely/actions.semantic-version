@@ -25,12 +25,20 @@ jobs:
           cat > ./.devcontainer/.env <<EOF
           EOF
 
-      - name: dotnet test Release
+      - name: Run tests
         uses: devcontainers/ci@v0.3
         with:
           runCmd: |
             bats --report-formatter junit ./tests/
           push: never
+
+      - name: Generate test report
+        uses: dorny/test-reporter@v1.9.1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: Test Results
+          path: report.xml
+          reporter: jest-junit
 
       - name: Apply semantic version
         if: ${{ steps.version.outputs.branchName == github.event.repository.default_branch }}
