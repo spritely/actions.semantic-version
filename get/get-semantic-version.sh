@@ -15,8 +15,8 @@ sanitize_branch_name() {
     echo "$sanitized"
 }
 
-is_main_branch() {
-    [[ "$1" =~ ^(master|main)$ ]]
+is_default_branch() {
+    [[ "$1" =~ ^(${default_branch})$ ]]
 }
 
 is_dev_branch() {
@@ -125,7 +125,7 @@ echo "Commits since version: $increment"
 echo "Short SHA: $short_sha"
 
 # Build the semantic version string
-if is_main_branch "$branch_name"; then
+if is_default_branch "$branch_name"; then
     # For main branches, just use the base version
     semantic="$base_version"
 else

@@ -8,10 +8,8 @@ setup() {
     export SCRIPT_PATH="${BATS_TEST_DIRNAME}/../get/get-semantic-version.sh"
 
     init_test_repo() {
-        local branch=${1:-master}
-
         cd "$TEMP_DIR"
-        git init --initial-branch=$branch > /dev/null 2>&1
+        git init --initial-branch=master > /dev/null 2>&1
         git config --local user.email "test@example.com"
         git config --local user.name "Test User"
 
@@ -22,7 +20,7 @@ setup() {
 
     run_script() {
         cd "$TEMP_DIR"
-        source "$SCRIPT_PATH"
+        DEFAULT_BRANCH=master source "$SCRIPT_PATH"
 
         # Write variables to a file for access in test
         echo "branch_name=$branch_name" > "$TEMP_DIR/vars"
@@ -36,7 +34,6 @@ setup() {
 
 teardown() {
     rm -rf "$TEMP_DIR"
-    #echo "Deleted $TEMP_DIR"
 }
 
 @test "get reads default version on master" {
@@ -51,24 +48,6 @@ teardown() {
 
     [ "$status" -eq 0 ]
     [ "$branch_name" = "master" ]
-    [ "$major" = "0" ]
-    [ "$minor" = "0" ]
-    [ "$patch" = "1" ]
-    [ "$semantic" = "0.0.1" ]
-}
-
-@test "get reads default version on main" {
-    # Arrange
-    init_test_repo main
-
-    # Act
-    run run_script
-
-    # Assert
-    source "$TEMP_DIR/vars"
-
-    [ "$status" -eq 0 ]
-    [ "$branch_name" = "main" ]
     [ "$major" = "0" ]
     [ "$minor" = "0" ]
     [ "$patch" = "1" ]
