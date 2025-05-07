@@ -17,7 +17,7 @@ trim_trailing_whitespace = true
 # Tabs can be great, but spaces are much more commonly used
 indent_style = space
 
-# Use 4 space indentation unless overriden for specific types of files
+# Use 4 space indentation unless overridden for specific types of files
 indent_size = 4
 
 # For best Microsoft interoperability
