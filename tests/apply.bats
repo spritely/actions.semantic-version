@@ -9,7 +9,7 @@ setup() {
 
     init_test_repo() {
         cd "$TEMP_DIR"
-        git init --initial-branch=master > /dev/null 2>&1
+        git init --initial-branch=main > /dev/null 2>&1
         git config --local user.email "test@example.com"
         git config --local user.name "Test User"
 

@@ -9,7 +9,11 @@ inputs:
   skipCheckout:
     description: If true, do not run the checkout step. Defaults to false
     required: false
-    default: "false"
+    default: 'false'
+  writeSummary:
+    description: Whether to write the summary to GitHub's step summary
+    required: false
+    default: 'true'
 outputs:
   branchName:
     description: The name of the branch being built.
@@ -43,8 +47,14 @@ runs:
         echo "branchName=$branch_name" >> $GITHUB_OUTPUT
         echo "semantic=$semantic" >> $GITHUB_OUTPUT
 
-        # Display results in GitHub
-        echo "# Branch" >> $GITHUB_STEP_SUMMARY
-        echo "$branch_name" >> $GITHUB_STEP_SUMMARY
-        echo "# Version" >> $GITHUB_STEP_SUMMARY
-        echo "$semantic" >> $GITHUB_STEP_SUMMARY
+    - id: summary
+      name: Write summary to GitHub
+      shell: bash
+      run: |
+        # Write results to GitHub Summary if requested
+        if [ "${{ inputs.writeSummary }}" = "true" ]; then
+            echo "# Branch" >> $GITHUB_STEP_SUMMARY
+            echo "${{ steps.version.outputs.branchName }}" >> $GITHUB_STEP_SUMMARY
+            echo "# Version" >> $GITHUB_STEP_SUMMARY
+            echo "${{ steps.version.outputs.semantic }}" >> $GITHUB_STEP_SUMMARY
+        fi

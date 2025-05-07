@@ -9,7 +9,7 @@ setup() {
 
     init_test_repo() {
         cd "$TEMP_DIR"
-        git init --initial-branch=master > /dev/null 2>&1
+        git init --initial-branch=main > /dev/null 2>&1
         git config --local user.email "test@example.com"
         git config --local user.name "Test User"
 
@@ -20,7 +20,7 @@ setup() {
 
     run_script() {
         cd "$TEMP_DIR"
-        DEFAULT_BRANCH=master source "$SCRIPT_PATH"
+        DEFAULT_BRANCH=main source "$SCRIPT_PATH"
 
         # Write variables to a file for access in test
         echo "branch_name=$branch_name" > "$TEMP_DIR/vars"
@@ -36,7 +36,7 @@ teardown() {
     rm -rf "$TEMP_DIR"
 }
 
-@test "get reads default version on master" {
+@test "get reads default version on main" {
     # Arrange
     init_test_repo
 
@@ -47,14 +47,14 @@ teardown() {
     source "$TEMP_DIR/vars"
 
     [ "$status" -eq 0 ]
-    [ "$branch_name" = "master" ]
+    [ "$branch_name" = "main" ]
     [ "$major" = "0" ]
     [ "$minor" = "0" ]
     [ "$patch" = "1" ]
     [ "$semantic" = "0.0.1" ]
 }
 
-@test "get preserves tag version and increments patch on master" {
+@test "get preserves tag version and increments patch on main" {
     # Arrange
     init_test_repo
     cd "$TEMP_DIR"
@@ -70,7 +70,7 @@ teardown() {
     source "$TEMP_DIR/vars"
 
     [ "$status" -eq 0 ]
-    [ "$branch_name" = "master" ]
+    [ "$branch_name" = "main" ]
     [ "$major" = "1" ]
     [ "$minor" = "2" ]
     [ "$patch" = "4" ]
@@ -92,7 +92,7 @@ teardown() {
     # Assert
     source "$TEMP_DIR/vars"
     [ "$status" -eq 0 ]
-    [ "$branch_name" = "master" ]
+    [ "$branch_name" = "main" ]
     [ "$major" = "1" ]
     [ "$minor" = "3" ]
     [ "$patch" = "0" ]
@@ -114,7 +114,7 @@ teardown() {
     # Assert
     source "$TEMP_DIR/vars"
     [ "$status" -eq 0 ]
-    [ "$branch_name" = "master" ]
+    [ "$branch_name" = "main" ]
     [ "$major" = "1" ]
     [ "$minor" = "3" ]
     [ "$patch" = "0" ]
@@ -136,7 +136,7 @@ teardown() {
     # Assert
     source "$TEMP_DIR/vars"
     [ "$status" -eq 0 ]
-    [ "$branch_name" = "master" ]
+    [ "$branch_name" = "main" ]
     [ "$major" = "2" ]
     [ "$minor" = "0" ]
     [ "$patch" = "0" ]
@@ -158,7 +158,7 @@ teardown() {
     # Assert
     source "$TEMP_DIR/vars"
     [ "$status" -eq 0 ]
-    [ "$branch_name" = "master" ]
+    [ "$branch_name" = "main" ]
     [ "$major" = "2" ]
     [ "$minor" = "0" ]
     [ "$patch" = "0" ]
@@ -506,11 +506,11 @@ teardown() {
     git commit -m "Add feature change" > /dev/null 2>&1
     git tag "v1.5.0"
 
-    # Switch back to master and add a commit
-    git checkout master > /dev/null 2>&1
-    echo "# Master change" >> README.md
+    # Switch back to main and add a commit
+    git checkout main > /dev/null 2>&1
+    echo "# Main change" >> README.md
     git add README.md
-    git commit -m "Add master change" > /dev/null 2>&1
+    git commit -m "Add main change" > /dev/null 2>&1
 
     # Act
     run run_script
@@ -518,7 +518,7 @@ teardown() {
     # Assert
     source "$TEMP_DIR/vars"
     [ "$status" -eq 0 ]
-    [ "$branch_name" = "master" ]
+    [ "$branch_name" = "main" ]
 
     # Should still use the tag from the other branch
     [ "$major" = "0" ]
