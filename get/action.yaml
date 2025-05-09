@@ -7,13 +7,13 @@ inputs:
     required: false
     default: ./
   skipCheckout:
-    description: If true, do not run the checkout step. Defaults to false
+    description: If true, do not run the checkout step. Defaults to false.
     required: false
-    default: 'false'
+    default: "false"
   writeSummary:
-    description: Whether to write the summary to GitHub's step summary
+    description: Whether to write the summary to GitHub. Defaults to true.
     required: false
-    default: 'true'
+    default: "true"
 outputs:
   branchName:
     description: The name of the branch being built.
@@ -47,8 +47,7 @@ runs:
         echo "branchName=$branch_name" >> $GITHUB_OUTPUT
         echo "semantic=$semantic" >> $GITHUB_OUTPUT
 
-    - id: summary
-      name: Write summary to GitHub
+    - name: Write summary to GitHub
       shell: bash
       run: |
         # Write results to GitHub Summary if requested

@@ -24,7 +24,7 @@ This action contains two main components:
 ```yaml
 - name: Calculate semantic version
   id: version
-  uses: spritely/actions.semantic-version/get@0.2
+  uses: spritely/actions.semantic-version/get@0.3.1
 
 - name: Use the version
   run: |
@@ -37,7 +37,8 @@ This action contains two main components:
 | Name | Description | Required | Default |
 |------|-------------|----------|---------|
 | `workingDirectory` | Directory to run git commands in | No | `./` |
-| `skipCheckout` | Skip checkout step | No | `"false"` |
+| `skipCheckout` | Skip checkout step | No | "false" |
+| `writeSummary` | Whether to write the summary to GitHub | No | "true" |
 
 #### Outputs
 
@@ -66,12 +67,12 @@ Add the following to commit messages to bump version components:
 ```yaml
 - name: Get semantic version
   id: version
-  uses: spritely/actions.semantic-version/get@0.2
+  uses: spritely/actions.semantic-version/get@0.3.1
 
 # Other build actions
 
 - name: Apply version tag
-  uses: spritely/actions.semantic-version/apply@0.2
+  uses: spritely/actions.semantic-version/apply@0.3.1
   with:
     version: ${{ steps.version.outputs.version }}
 ```
