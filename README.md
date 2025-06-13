@@ -38,7 +38,7 @@ This action contains two main components:
 |------|-------------|----------|---------|
 | `workingDirectory` | Directory to run git commands in | No | `./` |
 | `skipCheckout` | Skip checkout step | No | "false" |
-| `writeSummary` | Whether to write the summary to GitHub | No | "true" |
+| `writeSummary` | Whether to write a summary to GitHub | No | "true" |
 
 #### Outputs
 
