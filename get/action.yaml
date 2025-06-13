@@ -11,7 +11,7 @@ inputs:
     required: false
     default: "false"
   writeSummary:
-    description: Whether to write the summary to GitHub. Defaults to true.
+    description: Whether to write a summary to GitHub. Defaults to true.
     required: false
     default: "true"
 outputs:
@@ -50,7 +50,7 @@ runs:
     - name: Write summary to GitHub
       shell: bash
       run: |
-        # Write results to GitHub Summary if requested
+        # Write output to GitHub Summary if requested
         if [ "${{ inputs.writeSummary }}" = "true" ]; then
             echo "# Branch" >> $GITHUB_STEP_SUMMARY
             echo "${{ steps.version.outputs.branchName }}" >> $GITHUB_STEP_SUMMARY
