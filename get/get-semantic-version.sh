@@ -56,11 +56,11 @@ all_tags=$(git tag --merged HEAD 2>/dev/null)
 if [[ -n "$all_tags" ]]; then
     # Parse each tag and find the highest semantic version
     while read -r tag; do
-        if [[ "$tag" =~ ^v?([0-9]+)\.([0-9]+)\.([0-9]+)(-([a-zA-Z0-9.-]+))?$ ]]; then
+        if [[ "$tag" =~ ^v?([0-9]+)(\.([0-9]+))?(\.([0-9]+))?(-([a-zA-Z0-9.-]+))?$ ]]; then
             tag_major="${BASH_REMATCH[1]}"
-            tag_minor="${BASH_REMATCH[2]}"
-            tag_patch="${BASH_REMATCH[3]}"
-            tag_suffix="${BASH_REMATCH[5]:-}"
+            tag_minor="${BASH_REMATCH[3]:-0}"  # Default to 0 if minor is missing
+            tag_patch="${BASH_REMATCH[5]:-0}"  # Default to 0 if patch is missing
+            tag_suffix="${BASH_REMATCH[7]:-}"  # Empty if no suffix
 
             # Compare versions
             if (( tag_major > major )) ||
