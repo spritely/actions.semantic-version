@@ -638,3 +638,180 @@ teardown() {
     # Should not have consecutive hyphens
     [[ ! "$branch_part" =~ -- ]]
 }
+
+@test "get handles tag with major version only" {
+    # Arrange
+    init_test_repo
+    cd "$TEMP_DIR"
+    git tag "v2"
+    echo "# Another change" >> README.md
+    git add README.md
+    git commit -m "Another commit" > /dev/null 2>&1
+
+    # Act
+    run run_script
+
+    # Assert
+    source "$TEMP_DIR/vars"
+    [ "$status" -eq 0 ]
+    [ "$major" = "2" ]
+    [ "$minor" = "0" ]
+    [ "$patch" = "1" ]
+    [ "$semantic" = "2.0.1" ]
+}
+
+@test "get handles tag with major version only without v prefix" {
+    # Arrange
+    init_test_repo
+    cd "$TEMP_DIR"
+    git tag "3"
+    echo "# Another change" >> README.md
+    git add README.md
+    git commit -m "Another commit" > /dev/null 2>&1
+
+    # Act
+    run run_script
+
+    # Assert
+    source "$TEMP_DIR/vars"
+    [ "$status" -eq 0 ]
+    [ "$major" = "3" ]
+    [ "$minor" = "0" ]
+    [ "$patch" = "1" ]
+    [ "$semantic" = "3.0.1" ]
+}
+
+@test "get handles tag with major.minor version only" {
+    # Arrange
+    init_test_repo
+    cd "$TEMP_DIR"
+    git tag "v1.5"
+    echo "# Another change" >> README.md
+    git add README.md
+    git commit -m "Another commit" > /dev/null 2>&1
+
+    # Act
+    run run_script
+
+    # Assert
+    source "$TEMP_DIR/vars"
+    [ "$status" -eq 0 ]
+    [ "$major" = "1" ]
+    [ "$minor" = "5" ]
+    [ "$patch" = "1" ]
+    [ "$semantic" = "1.5.1" ]
+}
+
+@test "get handles tag with major.minor version only without v prefix" {
+    # Arrange
+    init_test_repo
+    cd "$TEMP_DIR"
+    git tag "2.3"
+    echo "# Another change" >> README.md
+    git add README.md
+    git commit -m "Another commit" > /dev/null 2>&1
+
+    # Act
+    run run_script
+
+    # Assert
+    source "$TEMP_DIR/vars"
+    [ "$status" -eq 0 ]
+    [ "$major" = "2" ]
+    [ "$minor" = "3" ]
+    [ "$patch" = "1" ]
+    [ "$semantic" = "2.3.1" ]
+}
+
+@test "get selects highest version among mixed tag formats" {
+    # Arrange
+    init_test_repo
+    cd "$TEMP_DIR"
+    # Add tags with different formats
+    git tag "v1.0.0"
+    git tag "v2"
+    git tag "v1.5"
+    git tag "v1.2.3"
+    echo "# Another change" >> README.md
+    git add README.md
+    git commit -m "Another commit" > /dev/null 2>&1
+
+    # Act
+    run run_script
+
+    # Assert
+    source "$TEMP_DIR/vars"
+    [ "$status" -eq 0 ]
+    [ "$major" = "2" ]
+    [ "$minor" = "0" ]
+    [ "$patch" = "1" ]
+    [ "$semantic" = "2.0.1" ]
+}
+
+@test "get correctly compares major.minor tags" {
+    # Arrange
+    init_test_repo
+    cd "$TEMP_DIR"
+    # Add multiple major.minor tags
+    git tag "v1.5"
+    git tag "v1.10"  # Should be higher than v1.5
+    git tag "v1.2"
+    echo "# Another change" >> README.md
+    git add README.md
+    git commit -m "Another commit" > /dev/null 2>&1
+
+    # Act
+    run run_script
+
+    # Assert
+    source "$TEMP_DIR/vars"
+    [ "$status" -eq 0 ]
+    [ "$major" = "1" ]
+    [ "$minor" = "10" ]
+    [ "$patch" = "1" ]
+    [ "$semantic" = "1.10.1" ]
+}
+
+@test "get handles major-only tag on feature branch" {
+    # Arrange
+    init_test_repo
+    cd "$TEMP_DIR"
+    git checkout -b "feature/test" > /dev/null 2>&1
+    git tag "v2"
+    echo "# Feature change" >> README.md
+    git add README.md
+    git commit -m "Add feature" > /dev/null 2>&1
+
+    # Act
+    run run_script
+
+    # Assert
+    source "$TEMP_DIR/vars"
+    [ "$status" -eq 0 ]
+    [ "$branch_name" = "feature/test" ]
+    [ "$major" = "2" ]
+    [ "$minor" = "0" ]
+    [ "$patch" = "1" ]
+    [[ "$semantic" =~ ^2\.0\.1-feature-test\.[0-9]+\.[0-9a-f]{7}$ ]]
+}
+
+@test "get handles major.minor tag with prerelease suffix" {
+    # Arrange
+    init_test_repo
+    cd "$TEMP_DIR"
+    git tag "v1.5-beta"
+    echo "# Another change" >> README.md
+    git add README.md
+    git commit -m "Another commit" > /dev/null 2>&1
+
+    # Act
+    run run_script
+
+    # Assert
+    source "$TEMP_DIR/vars"
+    [ "$status" -eq 0 ]
+    [ "$major" = "1" ]
+    [ "$minor" = "5" ]
+    [ "$patch" = "1" ]
+    [ "$semantic" = "1.5.1" ]
+}
