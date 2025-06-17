@@ -10,11 +10,11 @@ updates:
       all-actions:
         patterns:
           - "*"
-  - package-ecosystem: "docker-compose"
+  - package-ecosystem: docker-compose
     directories:
       - "**/*"
     schedule:
-      interval: "daily"
+      interval: daily
     groups:
       all-actions:
         patterns:
