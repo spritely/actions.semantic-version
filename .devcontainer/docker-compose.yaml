@@ -8,3 +8,6 @@ services:
       - ${HOME:-$USERPROFILE}/.ssh:/root/.ssh:ro
     env_file:
       - .env
+    # Environment variables have higher precedence than the .env file
+    environment:
+      - NUGET_TOKEN=${NUGET_TOKEN}
