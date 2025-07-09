@@ -35,7 +35,7 @@ jobs:
           push: never
 
       - name: Generate test report
-        uses: dorny/test-reporter@v2.1.0
+        uses: dorny/test-reporter@v2.1.1
         if: always()
         with:
           name: Test Results
