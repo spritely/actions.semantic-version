@@ -184,7 +184,7 @@ teardown() {
     [ "$major" = "0" ]
     [ "$minor" = "0" ]
     [ "$patch" = "1" ]
-    [[ "$semantic" =~ ^0\.0\.1-feature-new-thing\.[0-9]+\.[0-9a-f]{7}$ ]] # version with any valid increment and sha7
+    [[ "$semantic" =~ ^0\.0\.1-feature-new-thing\.[0-9]+\.g[0-9a-f]{7}$ ]] # version with any valid increment and sha7
 }
 
 @test "get formats develop branch version correctly" {
@@ -206,7 +206,7 @@ teardown() {
     [ "$major" = "0" ]
     [ "$minor" = "0" ]
     [ "$patch" = "1" ]
-    [[ "$semantic" =~ ^0\.0\.1-develop\.[0-9]+\.[0-9a-f]{7}$ ]] # version with any valid increment and sha7
+    [[ "$semantic" =~ ^0\.0\.1-develop\.[0-9]+\.g[0-9a-f]{7}$ ]] # version with any valid increment and sha7
 }
 
 @test "get correctly calculates increment counter for branches" {
@@ -229,7 +229,7 @@ teardown() {
     source "$TEMP_DIR/vars"
     [ "$status" -eq 0 ]
     [ "$increment" = "3" ]
-    [[ "$semantic" =~ ^1\.0\.1-feature-test-increment\.3\.[0-9a-f]{7}$ ]] # version with any valid increment and sha7
+    [[ "$semantic" =~ ^1\.0\.1-feature-test-increment\.3\.g[0-9a-f]{7}$ ]] # version with any valid increment and sha7
 }
 
 @test "get sanitizes branch names with special characters" {
@@ -245,7 +245,7 @@ teardown() {
     source "$TEMP_DIR/vars"
     [ "$status" -eq 0 ]
     [ "$branch_name" = "feature/special_chars@123!" ]
-    [[ "$semantic" =~ ^0\.0\.1-feature-special-chars-123\.[0-9]+\.[0-9a-f]{7}$ ]]
+    [[ "$semantic" =~ ^0\.0\.1-feature-special-chars-123\.[0-9]+\.g[0-9a-f]{7}$ ]]
 }
 
 @test "get handles non-standard version tag formats" {
@@ -311,7 +311,7 @@ teardown() {
     [ "$major" = "1" ]
     [ "$minor" = "2" ]
     [ "$patch" = "4" ]
-    [[ "$semantic" =~ ^1\.2\.4-v1-2-3\.[0-9]+\.[0-9a-f]{7}$ ]]
+    [[ "$semantic" =~ ^1\.2\.4-v1-2-3\.[0-9]+\.g[0-9a-f]{7}$ ]]
 }
 
 @test "get handles tags with prerelease information" {
@@ -354,7 +354,7 @@ teardown() {
     [ "$major" = "1" ]
     [ "$minor" = "2" ]
     [ "$patch" = "4" ]
-    [[ "$semantic" =~ ^1\.2\.4-feature-new-thing\.[0-9]+\.[0-9a-f]{7}$ ]]
+    [[ "$semantic" =~ ^1\.2\.4-feature-new-thing\.[0-9]+\.g[0-9a-f]{7}$ ]]
 }
 
 @test "get handles multiple version tags on same commit" {
@@ -406,7 +406,7 @@ teardown() {
     [ "$patch" = "4" ]
 
     # Should format version with HEAD as the branch name
-    [[ "$semantic" =~ ^1\.2\.4-HEAD\.[0-9]+\.[0-9a-f]{7}$ ]] || [[ "$semantic" =~ ^1\.2\.4-[0-9a-f]+\.[0-9]+\.[0-9a-f]{7}$ ]]
+    [[ "$semantic" =~ ^1\.2\.4-HEAD\.[0-9]+\.g[0-9a-f]{7}$ ]] || [[ "$semantic" =~ ^1\.2\.4-[0-9a-f]+\.[0-9]+\.g[0-9a-f]{7}$ ]]
 }
 
 @test "get handles multiple bump tags with precedence" {
@@ -491,7 +491,7 @@ teardown() {
     [ "$patch" = "0" ]
 
     # Should include branch info in version string
-    [[ "$semantic" =~ ^2\.0\.0-feature-new-thing\.[0-9]+\.[0-9a-f]{7}$ ]]
+    [[ "$semantic" =~ ^2\.0\.0-feature-new-thing\.[0-9]+\.g[0-9a-f]{7}$ ]]
 }
 
 @test "get ignores tag on different branch" {
@@ -548,7 +548,7 @@ teardown() {
     [ "$branch_name" = "$long_name" ]
 
     # Extract just the branch part from the semantic version
-    if [[ "$semantic" =~ ^[0-9]+\.[0-9]+\.[0-9]+-([a-zA-Z0-9-]+)\.[0-9]+\.[0-9a-f]+$ ]]; then
+    if [[ "$semantic" =~ ^[0-9]+\.[0-9]+\.[0-9]+-([a-zA-Z0-9-]+)\.[0-9]+\.g[0-9a-f]+$ ]]; then
         branch_part="${BASH_REMATCH[1]}"
     else
         echo "Failed to extract branch part from $semantic"
@@ -582,7 +582,7 @@ teardown() {
     [ "$branch_name" = "$edge_case_name" ]
 
     # Extract just the branch part from the semantic version
-    if [[ "$semantic" =~ ^[0-9]+\.[0-9]+\.[0-9]+-([a-zA-Z0-9-]+)\.[0-9]+\.[0-9a-f]+$ ]]; then
+    if [[ "$semantic" =~ ^[0-9]+\.[0-9]+\.[0-9]+-([a-zA-Z0-9-]+)\.[0-9]+\.g[0-9a-f]+$ ]]; then
         branch_part="${BASH_REMATCH[1]}"
     else
         echo "Failed to extract branch part from $semantic"
@@ -618,7 +618,7 @@ teardown() {
     [ "$branch_name" = "$special_chars_name" ]
 
     # Extract just the branch part from the semantic version
-    if [[ "$semantic" =~ ^[0-9]+\.[0-9]+\.[0-9]+-([a-zA-Z0-9-]+)\.[0-9]+\.[0-9a-f]+$ ]]; then
+    if [[ "$semantic" =~ ^[0-9]+\.[0-9]+\.[0-9]+-([a-zA-Z0-9-]+)\.[0-9]+\.g[0-9a-f]+$ ]]; then
         branch_part="${BASH_REMATCH[1]}"
     else
         echo "Failed to extract branch part from $semantic"
@@ -792,7 +792,7 @@ teardown() {
     [ "$major" = "2" ]
     [ "$minor" = "0" ]
     [ "$patch" = "1" ]
-    [[ "$semantic" =~ ^2\.0\.1-feature-test\.[0-9]+\.[0-9a-f]{7}$ ]]
+    [[ "$semantic" =~ ^2\.0\.1-feature-test\.[0-9]+\.g[0-9a-f]{7}$ ]]
 }
 
 @test "get handles major.minor tag with prerelease suffix" {
