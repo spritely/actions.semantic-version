@@ -1,7 +1,7 @@
 services:
   actions-semantic-version-dev:
     container_name: actions-semantic-version-dev
-    image: docker.io/spritelydev/dotnet8-devcontainer:0.3.2
+    image: docker.io/spritelydev/dotnet8-devcontainer:0.3.3
     command: /bin/sh -c "sleep infinity"
     volumes:
       - ../:/src

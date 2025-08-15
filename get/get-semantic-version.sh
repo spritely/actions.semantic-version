@@ -134,7 +134,7 @@ else
     # Adding short sha to prerelease section of semantic version instead of build section
     # because npm and Azure Artifacts do not like the + character that semver uses for build
     # See: https://semver.org/#spec-item-9
-    semantic="$base_version-$safe_branch.$increment.$short_sha"
+    semantic="$base_version-$safe_branch.$increment.g$short_sha"
 fi
 
 echo "Semantic version: $semantic"
