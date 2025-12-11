@@ -14,13 +14,21 @@
     "customizations": {
         "vscode": {
             "extensions": [
+                "anthropic.claude-code",
                 "bierner.github-markdown-preview",
+                "davidanson.vscode-markdownlint",
                 "editorconfig.editorconfig",
-                "github.vscode-github-actions",
-                "jetmartin.bats",
-                "mads-hartmann.bash-ide-vscode",
+                "github.copilot",
+                "github.copilot-chat",
+                "github.vscode-pull-request-github",
+                "google.geminicodeassist",
+                "humao.rest-client",
+                "jeppeandersen.vscode-kafka",
                 "mhutchie.git-graph",
-                "shd101wyy.markdown-preview-enhanced",
+                "ms-azuretools.vscode-containers",
+                "ms-dotnettools.csdevkit",
+                "openai.chatgpt",
+                "ryanluker.vscode-coverage-gutters",
                 "streetsidesoftware.code-spell-checker",
                 "yzhang.markdown-all-in-one"
             ]
