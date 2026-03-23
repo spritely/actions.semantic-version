@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
 
@@ -35,7 +35,7 @@ jobs:
           push: never
 
       - name: Generate test report
-        uses: dorny/test-reporter@b082adf0eced0765477756c2a610396589b8c637
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
         if: always()
         with:
           name: Test Results
