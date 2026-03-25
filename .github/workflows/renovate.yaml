@@ -1,0 +1,32 @@
+name: Renovate
+
+on:
+  workflow_dispatch:
+  # Daily at 12:20AM EST (5:20AM UTC), with a second run at 12:30AM EST (5:30AM UTC)
+  # Tier 1 (dependency): two runs 10 minutes apart.
+  # Run 1 creates PRs, CI validates, Run 2 auto-merges.
+  schedule:
+    - cron: '20 5 * * *'
+    - cron: '30 5 * * *'
+
+jobs:
+  renovate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Generate token
+        id: renovate-token
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
+        with:
+          app-id: ${{ secrets.RENOVATE_APP_ID }}
+          private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Renovate
+        uses: renovatebot/github-action@68a3ea99af6ad249940b5a9fdf44fc6d7f14378b # v46.1.6
+        with:
+          token: ${{ steps.renovate-token.outputs.token }}
+        env:
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          RENOVATE_ONBOARDING: false

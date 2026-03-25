@@ -1,7 +1,7 @@
 services:
   actions-semantic-version-dev:
     container_name: actions-semantic-version-dev
-    image: docker.io/spritelydev/dotnet10-devcontainer:0.1.2
+    image: docker.io/spritelydev/base-devcontainer:0.1.3
     privileged: true
     command: /bin/sh -c "sleep infinity"
     volumes:
@@ -9,6 +9,3 @@ services:
       - ${HOME:-$USERPROFILE}/.ssh:/root/.ssh:ro
     env_file:
       - .env
-    # Environment variables have higher precedence than the .env file
-    environment:
-      - NUGET_TOKEN=${NUGET_TOKEN}

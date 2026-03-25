@@ -3,7 +3,7 @@
 {
     "name": "actions.semantic-version",
 
-    "dockerComposeFile": "docker-compose.yaml",
+    "dockerComposeFile": "container-compose.yaml",
     "service": "actions-semantic-version-dev",
     "workspaceFolder": "/src",
     "initializeCommand": "(mkdir .devcontainer 2>/dev/null; touch .devcontainer/.env 2>/dev/null) || (mkdir .devcontainer 2> nul & type nul >> .devcontainer/.env 2> nul)",
@@ -18,17 +18,9 @@
                 "bierner.github-markdown-preview",
                 "davidanson.vscode-markdownlint",
                 "editorconfig.editorconfig",
-                "github.copilot",
-                "github.copilot-chat",
-                "github.vscode-pull-request-github",
-                "google.geminicodeassist",
-                "humao.rest-client",
-                "jeppeandersen.vscode-kafka",
                 "mhutchie.git-graph",
-                "ms-azuretools.vscode-containers",
-                "ms-dotnettools.csdevkit",
+                "ms-python.python",
                 "openai.chatgpt",
-                "ryanluker.vscode-coverage-gutters",
                 "streetsidesoftware.code-spell-checker",
                 "yzhang.markdown-all-in-one"
             ]

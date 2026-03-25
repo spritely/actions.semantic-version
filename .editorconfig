@@ -1,4 +1,4 @@
-# What is .editorConfig file? See: https://editorconfig.org
+﻿# What is .editorConfig file? See: https://editorconfig.org
 
 ###############################
 # Core EditorConfig Options   #
@@ -20,6 +20,10 @@ indent_style = space
 # Use 4 space indentation unless overridden for specific types of files
 indent_size = 4
 
+# Files should be UTF-8 encoded unless overridden for specific types of files
+charset = utf-8
+
+[*.{cs,vb}]
 # For best Microsoft interoperability
 # See: https://superuser.com/a/1553672
 charset = utf-8-bom
@@ -35,4 +39,16 @@ indent_size = 2
 
 # YAML files
 [*.{yml,yaml}]
+indent_size = 2
+
+# JSON files (including JSONC with comments)
+[*.{json,jsonc}]
+indent_size = 2
+
+# Markdown files
+[*.md]
+indent_size = 2
+
+# TypeScript/JavaScript files
+[*.{ts,tsx,js,jsx,mjs,cjs,vue}]
 indent_size = 2
