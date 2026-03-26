@@ -2,12 +2,12 @@ name: Renovate
 
 on:
   workflow_dispatch:
-  # Daily at 12:20AM EST (5:20AM UTC), with a second run at 12:30AM EST (5:30AM UTC)
-  # Tier 1 (dependency): two runs 10 minutes apart.
+  # Daily at 12:20AM EST (5:20AM UTC), with a second run at 12:25AM EST (5:25AM UTC)
+  # Tier 1 dependency: containers.base
   # Run 1 creates PRs, CI validates, Run 2 auto-merges.
   schedule:
     - cron: '20 5 * * *'
-    - cron: '30 5 * * *'
+    - cron: '25 5 * * *'
 
 jobs:
   renovate:
