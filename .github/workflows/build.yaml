@@ -28,7 +28,7 @@ jobs:
           EOF
 
       - name: Run tests
-        uses: devcontainers/ci@8bf61b26e9c3a98f69cb6ce2f88d24ff59b785c6
+        uses: devcontainers/ci@aefa8862765774c950401d0eb869dd8cb1ccc877
         with:
           runCmd: |
             bats --report-formatter junit ./tests/
