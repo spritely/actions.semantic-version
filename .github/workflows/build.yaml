@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
+        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98 # v6.0.2
         with:
           fetch-depth: 0
 
@@ -28,14 +28,14 @@ jobs:
           EOF
 
       - name: Run tests
-        uses: devcontainers/ci@8bf61b26e9c3a98f69cb6ce2f88d24ff59b785c6
+        uses: devcontainers/ci@8bf61b26e9c3a98f69cb6ce2f88d24ff59b785c6 # v0.3.1900000417
         with:
           runCmd: |
             bats --report-formatter junit ./tests/
           push: never
 
       - name: Generate test report
-        uses: dorny/test-reporter@b082adf0eced0765477756c2a610396589b8c637
+        uses: dorny/test-reporter@b082adf0eced0765477756c2a610396589b8c637 # v2.5.0
         if: always()
         with:
           name: Test Results
