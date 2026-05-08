@@ -1,7 +1,7 @@
 services:
   actions-semantic-version-dev:
     container_name: actions-semantic-version-dev
-    image: docker.io/spritelydev/base-devcontainer:0.2.35@sha256:f60b96c8baa0750ef6734de99f437a4e8b9b510446b5624a5eecf124d7bfcf71
+    image: docker.io/spritelydev/base-devcontainer:0.2.40@sha256:2c5ecb261fb53852c1991ef08ace7bbcf6e17724f925290a50fcfdddf764350a
     privileged: true
     command: /bin/sh -c "sleep infinity"
     volumes:
