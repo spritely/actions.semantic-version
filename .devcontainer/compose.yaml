@@ -1,11 +1,20 @@
+name: actions-semantic-version
+
 services:
-  actions-semantic-version-dev:
-    container_name: actions-semantic-version-dev
-    image: docker.io/spritelydev/base-devcontainer:0.5.2@sha256:8379ad6d71c404c12bf270db182367c7dba8e82bf2d3c2e9293b7fefc1bacfd5
-    privileged: true
+  dev:
+    image: docker.io/spritelydev/base-devcontainer:0.6.0@sha256:44d7d5bc1a0449b02e99e61224e61d39c9da133954a26dacb3102459add776a6
     command: /bin/sh -c "sleep infinity"
     volumes:
       - ../:/src
-      - ${HOME:-$USERPROFILE}/.ssh:/root/.ssh:ro
+      # Codex doesn't have environment variables to do this without an
+      # enterprise subscription so map in common auth folder instead
+      - ${HOME:-$USERPROFILE}/.codex:/root/.codex
     env_file:
       - .env
+    # Environment variables have higher precedence than the .env file
+    # Bare name variables only pass through if set on the host
+    environment:
+      - ANTHROPIC_API_KEY
+      - CLAUDE_CODE_OAUTH_TOKEN
+      - GITHUB_TOKEN
+
