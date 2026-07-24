@@ -9,7 +9,7 @@ permissions:
 jobs:
   build:
     name: Build and Test
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       # This repo dogfoods its own action, so the source must exist on disk before
@@ -22,12 +22,6 @@ jobs:
       - id: version
         name: Get semantic version
         uses: ./get
-
-      - name: Create .env for build
-        shell: bash
-        run: |
-          cat > ./.devcontainer/.env <<EOF
-          EOF
 
       - name: Run tests
         uses: devcontainers/ci@513af61f4de4f75d37e4438f184ba4358f0fc1ca # v0.3.1900000450
