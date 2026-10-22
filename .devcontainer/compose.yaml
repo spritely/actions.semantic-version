@@ -2,7 +2,7 @@ name: actions-semantic-version
 
 services:
   dev:
-    image: docker.io/spritelydev/base-devcontainer:0.9.73@sha256:3782859cb39caaa98c8b0fabdd619335b38152cf812fa4bde5afd0e0fac4ffee
+    image: docker.io/spritelydev/base-devcontainer:0.9.78@sha256:7b450ac4718cf36b84853e1c9ea062dfbef98e130fcd631d85b2d1047d77adbd
     # When running Podman, in order for bind mounts to be editable both inside and outside the
     # devcontainer, it must either run as `root` or the user id must be translated into the
     # container properly. Setting userns_mode to "keep-id" tells podman to not shift user ids and
